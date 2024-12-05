@@ -1,4 +1,4 @@
-# Core logic for solar system calculation
+# Core logic for solar system calculation gui
 
 def add_appliances():
     """
