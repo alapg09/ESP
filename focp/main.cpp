@@ -48,19 +48,19 @@ int main()
 
     // player movement
 
-    char **displayed_Grid = initializeGrid(rows, columns);
+    char **displayed_Grid = initializeGrid(rows, columns); // the grid that will be shown to the player
     displayed_Grid[0][0] = 'P';
 
-    int player_row = 0, player_column = 0;
+    int player_row = 0, player_column = 0; // for keeping track of player positions
 
-    while (true)
+    while (true) // gameloop
     {
 
-        displayGrid(rows, columns, displayed_Grid);
+        displayGrid(rows, columns, displayed_Grid); // displaying the grid
 
-        movement(player_row, player_column, rows, columns);
+        movement(player_row, player_column, rows, columns); // movement
 
-        if (grid[player_row][player_column] == '*')
+        if (grid[player_row][player_column] == '*') // checking if the player hit a mine
         {
             cout << "You hit a mine! Game over." << endl;
             cout << "Here is the grid: " << endl;
@@ -68,7 +68,7 @@ int main()
             break;
         }
 
-        if (player_row == rows - 1 && player_column == columns - 1)
+        if (player_row == rows - 1 && player_column == columns - 1) // checking for last cell
         {
             cout << "Congratulations! You reached the goal." << endl;
             break;

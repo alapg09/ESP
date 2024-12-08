@@ -5,7 +5,7 @@ using namespace std;
 
 bool valid_move(int newRow, int newCol, int rows, int columns)
 {
-    return (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns);
+    return (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns); // checking if player is going beyond grid boundaries
 }
 
 void movement(int &player_row, int &player_column, int rows, int columns)
