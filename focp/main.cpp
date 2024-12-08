@@ -1,11 +1,14 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <string>
 #include "Grid.h"             //for grid related functions like initialization, displaying and freeing
 #include "mine_layouts.h"     //for placement of mines
-#include "player_movements.h" //for player movements
+#include "player_movements.h" //for player movements and mine detections
 
 using namespace std;
+
+int count_adjacentMines(int player_row, int player_column, char **grid);
 
 int main()
 {
@@ -73,6 +76,13 @@ int main()
             cout << "Congratulations! You reached the goal." << endl;
             break;
         }
+
+        // calculating the adjacent mines for providing the hint
+        int adj_mines = count_adjacentMines(player_row, player_column, rows, columns, grid);
+
+        // converting int to string and displaying the character
+        string count = to_string(adj_mines);
+        displayed_Grid[player_row][player_column] = count[0];
     }
 
     freeGrid(rows, displayed_Grid);

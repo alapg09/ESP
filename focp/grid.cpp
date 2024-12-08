@@ -43,3 +43,34 @@ void freeGrid(int rows, char **grid) // deallocating the memory
     }
     delete[] grid;
 }
+
+int count_adjacentMines(int player_row, int player_column, int rows, int columns, char **grid)
+{
+    int adj_mines = 0;
+
+    // Check the top cell if it's within bounds
+    if (player_row - 1 >= 0 && grid[player_row - 1][player_column] == '*')
+    {
+        adj_mines++;
+    }
+
+    // Check the bottom cell if it's within bounds
+    if (player_row + 1 < rows && grid[player_row + 1][player_column] == '*')
+    {
+        adj_mines++;
+    }
+
+    // Check the left cell if it's within bounds
+    if (player_column - 1 >= 0 && grid[player_row][player_column - 1] == '*')
+    {
+        adj_mines++;
+    }
+
+    // Check the right cell if it's within bounds
+    if (player_column + 1 < columns && grid[player_row][player_column + 1] == '*')
+    {
+        adj_mines++;
+    }
+
+    return adj_mines;
+}
