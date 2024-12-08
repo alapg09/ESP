@@ -1,114 +1,81 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include "Grid.h"             //for grid related functions like initialization, displaying and freeing
+#include "mine_layouts.h"     //for placement of mines
+#include "player_movements.h" //for player movements
 
 using namespace std;
-
-char **initializeGrid(int rows, int columns);
-void placeMines(int rows, int columns, int number, char **grid);
-void displayGrid(int rows, int columns, char **grid);
-void freeGrid(int rows, char **grid);
 
 int main()
 {
     int answer;
     char **grid;
+    int rows, columns;
     srand(time(0));
 
+    // main menu
     cout << "Welcome to MINE MAZE" << endl
-         << "Please Select a difficulty level" << endl
+         << "Please Select a difficulty level" << endl // getting the difficulty
          << "1 for easy, 2 for hard" << endl
          << "0 to quit" << endl;
     cin >> answer;
 
-    while (!((answer == 0) || (answer == 1) || (answer == 2)))
+    while (!((answer == 0) || (answer == 1) || (answer == 2))) // input validation
     {
         cout << "Invalid Input. Please enter a number (0-2)";
         cin >> answer;
     }
-    if (answer == 0)
+    if (answer == 0) // quitting
     {
         cout << "GoodBye!";
         return 0;
     }
-    else if (answer == 1)
+    else if (answer == 1) // easy level initialization
     {
         grid = initializeGrid(5, 5);
-        placeMines(5, 5, 8, grid);
-        displayGrid(5, 5, grid);
+        placeMines(5, 5, 'e', grid);
+        rows = 5, columns = 5;
+        // displayGrid(5, 5, grid);
     }
-    else
+    else // hard level initialization
     {
         grid = initializeGrid(8, 8);
-        placeMines(8, 8, 15, grid);
-        displayGrid(8, 8, grid);
+        placeMines(8, 8, 'h', grid);
+        rows = 8, columns = 8;
+        // displayGrid(8, 8, grid);
     }
 
-    freeGrid(5, grid);
+    // player movement
+
+    char **displayed_Grid = initializeGrid(rows, columns);
+    displayed_Grid[0][0] = 'P';
+
+    int player_row = 0, player_column = 0;
+
+    while (true)
+    {
+
+        displayGrid(rows, columns, displayed_Grid);
+
+        movement(player_row, player_column, rows, columns);
+
+        if (grid[player_row][player_column] == '*')
+        {
+            cout << "You hit a mine! Game over." << endl;
+            cout << "Here is the grid: " << endl;
+            displayGrid(rows, columns, grid);
+            break;
+        }
+
+        if (player_row == rows - 1 && player_column == columns - 1)
+        {
+            cout << "Congratulations! You reached the goal." << endl;
+            break;
+        }
+    }
+
+    freeGrid(rows, displayed_Grid);
+    freeGrid(rows, grid);
     return 0;
-}
-
-char **initializeGrid(int rows, int columns) // creates a 2d array dynamically
-{
-    char **grid = new char *[rows]; // initializes the grid
-
-    for (int i = 0; i < rows; i++)
-    {
-        grid[i] = new char[columns]; // initialized the columns
-    }
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            grid[i][j] = '.';
-        }
-    }
-
-    return grid;
-}
-
-void placeMines(int rows, int columns, int number, char **grid)
-{
-
-    int r, c; // for random column and row coordinate
-    int placedMines = 0;
-    while (placedMines < number) // ensuring that required amount of mines are placed after skipping the repititions and restricted cells
-    {
-        do
-        {
-            r = rand() % rows; // random number in the range
-            c = rand() % columns;
-
-        } while ((grid[r][c] == '*')); // ensuring that the cell is empty
-
-        if ((r >= 0 && r <= 1 && c >= 0 && c <= 1) ||                                 // ensuring that starting point and adjacent cells are free of mines
-            (r >= rows - 2 && r <= rows - 1 && c >= columns - 2 && c <= columns - 1)) // ensuring that ending point and adjacent cells are free of mines
-        {
-            continue;
-        }
-        grid[r][c] = '*'; // placement of mine
-        placedMines++;
-    }
-}
-
-void displayGrid(int rows, int columns, char **grid) // showing the grid
-{
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            cout << grid[i][j] << ' ';
-        }
-        cout << endl;
-    }
-}
-
-void freeGrid(int rows, char **grid) // deallocating the memory
-{
-    for (int i = 0; i < rows; i++)
-    {
-        delete[] grid[i];
-    }
-    delete[] grid;
 }
