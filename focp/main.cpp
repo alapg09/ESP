@@ -95,7 +95,12 @@ int main()
 
         if (grid[player_row][player_column] == '*') // checking if the player hit a mine
         {
-            cout << "You hit a mine! Game over." << endl;
+            cout << "***********************************************" << endl
+                 << "*                                             *" << endl
+                 << "*          OOPS!!! You hit a mine!            *" << endl
+                 << "*                GAME OVER!                   *" << endl
+                 << "*                                             *" << endl
+                 << "***********************************************" << endl;
             cout << "Here is the grid: " << endl;
             displayGrid(rows, columns, grid);
             break;
