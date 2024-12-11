@@ -50,7 +50,7 @@ int main()
         {
             cout << "Invalid input! Please enter E/e, H/h, or Q/q: ";
             cin >> answer;
-
+            answer = tolower(answer);
             //  validation for unexpected data types and extra characters
             while (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
             {
