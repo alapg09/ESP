@@ -1,6 +1,8 @@
 #include <iostream>
 #include <limits>
+#include <cctype>
 #include "player_movements.h"
+#include "file_operations.h"
 
 using namespace std;
 
@@ -9,7 +11,7 @@ bool valid_move(int newRow, int newCol, int rows, int columns)
     return (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < columns); // checking if player is going beyond grid boundaries
 }
 
-void movement(int &player_row, int &player_column, int rows, int columns) // movemwnt of player
+int movement(int &player_row, int &player_column, int rows, int columns, char **grid, char **displayedGrid) // movemwnt of player
 {
     int new_row = player_row, new_column = player_column; // temporary variables that will be validated firsyt
     char move;
@@ -17,8 +19,11 @@ void movement(int &player_row, int &player_column, int rows, int columns) // mov
     while (true)
     {
 
-        cout << "Use W, A, S, D to move up, down, left, right: " << endl;
+        cout << "Use W, A, S, D to move up, down, left, right: " << endl
+             << "Click 'v' to save and quit the game. " << endl;
         cin >> move;
+
+        move = tolower(move);
 
         if (cin.fail() || cin.peek() != '\n') // input validation for unexpected data types and longer inputs
         {
@@ -31,21 +36,21 @@ void movement(int &player_row, int &player_column, int rows, int columns) // mov
         switch (move)
         {
         case 'w':
-        case 'W':
             new_row--;
             break;
         case 's':
-        case 'S':
             new_row++;
             break;
         case 'a':
-        case 'A':
             new_column--;
             break;
         case 'd':
-        case 'D':
             new_column++;
             break;
+        case 'v':
+            saveGame(rows, columns, player_row, player_column, grid, displayedGrid);
+            break;
+            return 0;
         default:
             cout << "Invalid Input! use w/a/s/d" << endl; // input validation
             continue;
@@ -62,4 +67,5 @@ void movement(int &player_row, int &player_column, int rows, int columns) // mov
             new_row = player_row, new_column = player_column;
         }
     }
+    return 1;
 }
