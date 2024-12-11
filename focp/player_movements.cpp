@@ -49,7 +49,6 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
             break;
         case 'v':
             saveGame(rows, columns, player_row, player_column, grid, displayedGrid);
-            break;
             return 0;
         default:
             cout << "Invalid Input! use w/a/s/d" << endl; // input validation
