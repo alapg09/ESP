@@ -95,7 +95,7 @@ int main()
                  << "* 5. Moves outside the grid are not allowed.                  *\n"
                  << "* 6. If you choose 'R/r' from the menu, these rules will show.*\n"
                  << "***************************************************************\n"
-                 << "Going back to the main menu";
+                 << "Going back to the main menu" << endl;
             continue;
         }
 
