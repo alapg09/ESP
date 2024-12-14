@@ -8,10 +8,9 @@
 #include "mine_layouts.h"     //for placement of mines
 #include "player_movements.h" //for player movements and mine detections
 #include "file_operations.h"  //for saving and loading grid states;
+#include "misc.h"             //miscallenous functions like getting validated input
 
 using namespace std;
-
-char getValidatedInput(const string &prompt, const string &validOptions); // modularizing repetitive input validations
 
 int main()
 {
@@ -25,6 +24,7 @@ int main()
 
     do // game will run untill the user decides to quit
     {
+        system("cls");
 
         cout << "***********************************************" << endl
              << "*                                             *" << endl
@@ -33,11 +33,11 @@ int main()
              << "*            Please Select an Option          *" << endl
              << "*                                             *" << endl
              << "*         'l' to load previous game           *" << endl
-             << "*    'e; for Easy      |    'h' for Hard      *" << endl
+             << "*    'e' for Easy      |    'h' for Hard      *" << endl
              << "*    'q' to quit       |    'r' for Rules     *" << endl
              << "*                                             *" << endl
              << "***********************************************" << endl;
-        answer = getValidatedInput("", "lehqr");
+        answer = get_validated_input("", "lehqr");
 
         if (answer == 'q') // quitting
         {
@@ -95,6 +95,7 @@ int main()
 
         while (true) // gameloop
         {
+            system("cls"); // used multiple times to clear the terminal
 
             displayGrid(rows, columns, displayed_Grid); // displaying the grid
             int save;
@@ -107,6 +108,7 @@ int main()
 
             if (grid[player_row][player_column] == '*') // checking if the player hit a mine
             {
+                system("cls");
                 cout << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          OOPS!!! You hit a mine!            *" << endl
@@ -120,6 +122,7 @@ int main()
 
             if (player_row == rows - 1 && player_column == columns - 1) // checking for last cell
             {
+                system("cls");
                 cout << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          Congratulations! You reached       *" << endl
@@ -143,10 +146,11 @@ int main()
         freeGrid(rows, displayed_Grid);
         freeGrid(rows, grid);
 
-        restart = getValidatedInput("Do you want to go back to the main menu? (Y/y for yes and N/n for quitting) ", "yn");
+        restart = get_validated_input("Do you want to go back to the main menu? (Y/y for yes and N/n for quitting) ", "yn");
 
     } while (restart == 'y');
 
+    system("cls");
     cout << "***********************************************" << endl
          << "*                                             *" << endl
          << "*          GoodBye! Quitting Now              *" << endl
@@ -154,33 +158,4 @@ int main()
          << "***********************************************" << endl;
 
     return 0;
-}
-
-char getValidatedInput(const string &prompt, const string &validOptions)
-{
-    char input;
-    while (true)
-    {
-        cout << prompt;
-        cin >> input;
-
-        // validates only single characteredi innputs
-        if (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input! Please enter a single character." << endl;
-            continue;
-        }
-
-        input = tolower(input);
-
-        // Check against valid options
-        if (validOptions.find(input) != string::npos) // checks if entered options are among the ones allowed
-        {
-            return input;
-        }
-
-        cout << "Invalid input! Please enter one of the following: " << validOptions << endl;
-    }
 }
