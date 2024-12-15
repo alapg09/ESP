@@ -9,6 +9,7 @@
 #include "player_movements.h" //for player movements and mine detections
 #include "file_operations.h"  //for saving and loading grid states;
 #include "misc.h"             //miscallenous functions like getting validated input
+#include "color.h"            //terminal beautification
 
 using namespace std;
 
@@ -26,28 +27,23 @@ int main()
     {
         system("cls");
 
-        cout << "***********************************************" << endl
+        cout << GREEN << BOLD << "***********************************************" << endl
              << "*                                             *" << endl
-             << "*               Welcome to MINE MAZE          *" << endl
+             << "*           Welcome to MINE MAZE              *" << endl
              << "*                                             *" << endl
-             << "*            Please Select an Option          *" << endl
+             << "*          Please Select an Option            *" << endl
              << "*                                             *" << endl
-             << "*         'l' to load previous game           *" << endl
-             << "*    'e' for Easy      |    'h' for Hard      *" << endl
-             << "*    'q' to quit       |    'r' for Rules     *" << endl
+             << "*       'l' to load previous game             *" << endl
+             << "*    'e' for Easy  |      'h' for Hard        *" << endl
+             << "*    'q' to quit    |      'r' for Rules      *" << endl
              << "*                                             *" << endl
              << "***********************************************" << endl;
+
         answer = get_validated_input("", "lehqr");
 
         if (answer == 'q') // quitting
         {
-            cout << "***********************************************" << endl
-                 << "*                                             *" << endl
-                 << "*          GoodBye! Quitting Now              *" << endl
-                 << "*                                             *" << endl
-                 << "***********************************************" << endl;
-
-            return 0;
+            break;
         }
         else if (answer == 'e') // easy level initialization
         {
@@ -63,8 +59,9 @@ int main()
         }
         else if (answer == 'r')
         {
-            cout << "\n*************************************************************\n"
-                 << "*                           RULES                             *\n"
+            cout << GREEN << "\n***************************************************************\n"
+                 << BOLD << "*                           RULES                             *\n"
+                 << RESET << GREEN
                  << "***************************************************************\n"
                  << "* 1. Use W (up), A (left), S (down), and D (right) to move.   *\n"
                  << "* 2. The game ends if you step on a mine ('*').               *\n"
@@ -73,14 +70,23 @@ int main()
                  << "* 5. Moves outside the grid are not allowed.                  *\n"
                  << "* 6. If you choose 'r' from the menu, these rules will show.  *\n"
                  << "* 7. You can save the game during any move by clicking 's'.   *\n"
-                 << "***************************************************************\n"
-                 << "Going back to the main menu" << endl;
-            continue;
+                 << "***************************************************************\n\n\n"
+                 << RESET;
+            answer = get_validated_input("Do you want to go back to the main menu? (y/n): ", "yn");
+            if (answer == 'y')
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
         }
         else
         {
             loadGame(rows, columns, player_row, player_column, grid, displayed_Grid);
-            cout << "Game loaded successfully!" << endl;
+            cout << GREEN << "Game loaded successfully!" << endl
+                 << RESET;
         }
 
         // player movement
@@ -88,7 +94,8 @@ int main()
         {
 
             displayed_Grid = initializeGrid(rows, columns); // the grid that will be shown to the player
-            displayed_Grid[0][0] = 'P';                     // initial position
+            displayed_Grid[0][0] = 'S';
+            displayed_Grid[rows - 1][columns - 1] = 'E'; // initial position
 
             player_row = 0, player_column = 0; // for keeping track of player positions
         }
@@ -102,20 +109,23 @@ int main()
             save = movement(player_row, player_column, rows, columns, grid, displayed_Grid); // movement
             if (save == 0)
             {
-                cout << "Successfully saved the game." << endl;
+                cout << GREEN << "Successfully saved the game." << endl
+                     << RESET;
                 break;
             }
 
             if (grid[player_row][player_column] == '*') // checking if the player hit a mine
             {
                 system("cls");
-                cout << "***********************************************" << endl
+                cout << RED << BOLD << "***********************************************" << endl
                      << "*                                             *" << endl
-                     << "*          OOPS!!! You hit a mine!            *" << endl
-                     << "*                GAME OVER!                   *" << endl
+                     << "*          " << "OOPS!!! You hit a mine!" << "            *" << endl
+                     << "*                " << UNDERLINE << "GAME OVER!" << RESET << RED << "                   *" << endl
                      << "*                                             *" << endl
-                     << "***********************************************" << endl;
-                cout << "Here is the grid: " << endl;
+                     << "***********************************************" << RESET << endl;
+
+                cout << GREEN << "Here is the grid: " << endl
+                     << RESET;
                 displayGrid(rows, columns, grid);
                 break;
             }
@@ -123,14 +133,16 @@ int main()
             if (player_row == rows - 1 && player_column == columns - 1) // checking for last cell
             {
                 system("cls");
-                cout << "***********************************************" << endl
+                cout << CYAN << BOLD << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          Congratulations! You reached       *" << endl
                      << "*                the goal.                    *" << endl
                      << "*                                             *" << endl
-                     << "***********************************************" << endl;
+                     << "***********************************************" << endl
+                     << RESET;
 
-                cout << "Here is the grid: " << endl;
+                cout << GREEN << "Here is the grid: " << endl
+                     << RESET;
                 displayGrid(rows, columns, grid);
                 break;
             }
@@ -151,11 +163,13 @@ int main()
     } while (restart == 'y');
 
     system("cls");
-    cout << "***********************************************" << endl
+    cout << RED << "***********************************************" << endl
          << "*                                             *" << endl
-         << "*          GoodBye! Quitting Now              *" << endl
+         << "*" << BOLD << "          GoodBye! Quitting Now              *" << RESET << RED << endl
          << "*                                             *" << endl
-         << "***********************************************" << endl;
+         << "***********************************************" << endl
+         << RESET;
 
+    system("pause");
     return 0;
 }

@@ -4,6 +4,7 @@
 #include "player_movements.h"
 #include "file_operations.h"
 #include "misc.h"
+#include "color.h"
 
 using namespace std;
 
@@ -28,7 +29,8 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input! Please enter a single character.\n";
+            cout << GREEN << "Invalid input! Please enter a single character.\n"
+                 << RESET;
             continue;
         }
 
@@ -50,7 +52,8 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
             saveGame(rows, columns, player_row, player_column, grid, displayedGrid);
             return 0;
         default:
-            cout << "Invalid Input! use w/a/s/d" << endl; // input validation
+            cout << GREEN << "Invalid Input! use w/a/s/d" << endl
+                 << RESET; // input validation
             continue;
         }
         if (valid_move(new_row, new_column, rows, columns)) // checks the validity of move ie it is not crossing the boundary
@@ -61,7 +64,8 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
         }
         else
         {
-            cout << "Invalid move! You can't go outside the grid." << endl;
+            cout << GREEN << "Invalid move! You can't go outside the grid." << endl
+                 << RESET;
             new_row = player_row, new_column = player_column;
         }
     }

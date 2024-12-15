@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include "misc.h"
+#include "color.h"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ char get_validated_input(const string &prompt, const string &validOptions)
     char input;
     while (true)
     {
-        cout << prompt;
+        cout << GREEN << prompt << RESET;
         cin >> input;
 
         // validates only single characteredi innputs
@@ -18,7 +19,8 @@ char get_validated_input(const string &prompt, const string &validOptions)
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input! Please enter a single character." << endl;
+            cout << GREEN "Invalid input! Please enter a single character." << endl
+                 << RESET;
             continue;
         }
 
@@ -30,6 +32,7 @@ char get_validated_input(const string &prompt, const string &validOptions)
             return input;
         }
 
-        cout << "Invalid input! Please enter one of the following: " << validOptions << endl;
+        cout << GREEN << "Invalid input! Please enter one of the following: " << validOptions << endl
+             << RESET;
     }
 }

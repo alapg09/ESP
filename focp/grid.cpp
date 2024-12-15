@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Grid.h"
+#include "color.h"
 
 using namespace std;
 
@@ -29,7 +30,18 @@ void displayGrid(int rows, int columns, char **grid) // showing the grid
     {
         for (int j = 0; j < columns; j++)
         {
-            cout << grid[i][j] << ' ';
+            if (grid[i][j] == '*')
+            {
+                cout << RED << grid[i][j] << ' ' << RESET;
+            }
+            else if (grid[i][j] == '.')
+            {
+                cout << GREEN << grid[i][j] << ' ' << RESET;
+            }
+            else
+            {
+                cout << WHITE << grid[i][j] << ' ' << RESET;
+            }
         }
         cout << endl;
     }
