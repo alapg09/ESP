@@ -1,12 +1,14 @@
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
+#include <ctime>   //time function
+#include <cstdlib> //rand
 #include <string>
 #include <cctype> //for tolower function
 #include <limits>
 #include "Grid.h"             //for grid related functions like initialization, displaying and freeing
 #include "mine_layouts.h"     //for placement of mines
 #include "player_movements.h" //for player movements and mine detections
+#include "file_operations.h"  //for saving and loading grid states;
+#include "misc.h"             //miscallenous functions like getting validated input
 
 using namespace std;
 
@@ -14,54 +16,30 @@ int main()
 {
     char answer, restart = 'y';
     char **grid = nullptr; // grid will be dynamically allocated using pointers
-    int rows, columns;
+    char **displayed_Grid = nullptr;
+    int rows, columns, player_row, player_column;
     srand(time(0));
 
     // main menu
 
     do // game will run untill the user decides to quit
     {
+        system("cls");
 
         cout << "***********************************************" << endl
              << "*                                             *" << endl
              << "*               Welcome to MINE MAZE          *" << endl
              << "*                                             *" << endl
-             << "*        Please Select a difficulty level     *" << endl
+             << "*            Please Select an Option          *" << endl
              << "*                                             *" << endl
-             << "*    E/e for Easy      |    H/h for Hard      *" << endl
-             << "*    Q/q to Quit       |    R/r for Rules     *" << endl
+             << "*         'l' to load previous game           *" << endl
+             << "*    'e' for Easy      |    'h' for Hard      *" << endl
+             << "*    'q' to quit       |    'r' for Rules     *" << endl
              << "*                                             *" << endl
              << "***********************************************" << endl;
-        cin >> answer;
+        answer = get_validated_input("", "lehqr");
 
-        //  validation for unexpected data types and extra characters
-        while (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input! Please enter a single character." << endl;
-            cin >> answer;
-        }
-
-        answer = tolower(answer); // converting to lowercase
-
-        // validating the input against allowed options
-        while (answer != 'e' && answer != 'h' && answer != 'q' && answer != 'r')
-        {
-            cout << "Invalid input! Please enter E/e, H/h, or Q/q: ";
-            cin >> answer;
-            answer = tolower(answer);
-            //  validation for unexpected data types and extra characters
-            while (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
-            {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid input! Please enter a single character." << endl;
-                cin >> answer;
-            }
-        }
-
-        if (answer == 'Q' || answer == 'q') // quitting
+        if (answer == 'q') // quitting
         {
             cout << "***********************************************" << endl
                  << "*                                             *" << endl
@@ -71,19 +49,19 @@ int main()
 
             return 0;
         }
-        else if (answer == 'E' || answer == 'e') // easy level initialization
+        else if (answer == 'e') // easy level initialization
         {
             grid = initializeGrid(5, 5);
             placeMines(5, 5, 'e', grid);
             rows = 5, columns = 5;
         }
-        else if (answer == 'H' || answer == 'h') // hard level initialization
+        else if (answer == 'h') // hard level initialization
         {
             grid = initializeGrid(8, 8);
             placeMines(8, 8, 'h', grid);
             rows = 8, columns = 8;
         }
-        else
+        else if (answer == 'r')
         {
             cout << "\n*************************************************************\n"
                  << "*                           RULES                             *\n"
@@ -93,28 +71,44 @@ int main()
                  << "* 3. Reach the bottom-right corner to win the game.           *\n"
                  << "* 4. The number displayed on a cell shows adjacent mines.     *\n"
                  << "* 5. Moves outside the grid are not allowed.                  *\n"
-                 << "* 6. If you choose 'R/r' from the menu, these rules will show.*\n"
+                 << "* 6. If you choose 'r' from the menu, these rules will show.  *\n"
+                 << "* 7. You can save the game during any move by clicking 's'.   *\n"
                  << "***************************************************************\n"
                  << "Going back to the main menu" << endl;
             continue;
         }
+        else
+        {
+            loadGame(rows, columns, player_row, player_column, grid, displayed_Grid);
+            cout << "Game loaded successfully!" << endl;
+        }
 
         // player movement
+        if (answer != 'l') // making sure that displayed grid is not re initialised in the case of load game
+        {
 
-        char **displayed_Grid = initializeGrid(rows, columns); // the grid that will be shown to the player
-        displayed_Grid[0][0] = 'P';                            // initial position
+            displayed_Grid = initializeGrid(rows, columns); // the grid that will be shown to the player
+            displayed_Grid[0][0] = 'P';                     // initial position
 
-        int player_row = 0, player_column = 0; // for keeping track of player positions
+            player_row = 0, player_column = 0; // for keeping track of player positions
+        }
 
         while (true) // gameloop
         {
+            system("cls"); // used multiple times to clear the terminal
 
             displayGrid(rows, columns, displayed_Grid); // displaying the grid
-
-            movement(player_row, player_column, rows, columns); // movement
+            int save;
+            save = movement(player_row, player_column, rows, columns, grid, displayed_Grid); // movement
+            if (save == 0)
+            {
+                cout << "Successfully saved the game." << endl;
+                break;
+            }
 
             if (grid[player_row][player_column] == '*') // checking if the player hit a mine
             {
+                system("cls");
                 cout << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          OOPS!!! You hit a mine!            *" << endl
@@ -128,6 +122,7 @@ int main()
 
             if (player_row == rows - 1 && player_column == columns - 1) // checking for last cell
             {
+                system("cls");
                 cout << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          Congratulations! You reached       *" << endl
@@ -151,28 +146,11 @@ int main()
         freeGrid(rows, displayed_Grid);
         freeGrid(rows, grid);
 
-        cout << "Do you want to go back to the main menu? (Y/y for yes and N/n for quitting) ";
-        cin >> restart;
-
-        // input validations
-        while (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid Input. Please enter Y/y for returning to main menu and N/n for Quitting" << endl;
-            cin >> restart;
-        }
-
-        restart = tolower(restart);
-
-        while (restart != 'y' && restart != 'n')
-        {
-            cout << "Invalid Input. Please enter Y/y for returning to main menu and N/n for Quitting";
-            cin >> restart;
-        }
+        restart = get_validated_input("Do you want to go back to the main menu? (Y/y for yes and N/n for quitting) ", "yn");
 
     } while (restart == 'y');
 
+    system("cls");
     cout << "***********************************************" << endl
          << "*                                             *" << endl
          << "*          GoodBye! Quitting Now              *" << endl
