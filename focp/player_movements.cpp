@@ -3,6 +3,7 @@
 #include <cctype>
 #include "player_movements.h"
 #include "file_operations.h"
+#include "misc.h"
 
 using namespace std;
 
@@ -19,9 +20,7 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
     while (true)
     {
 
-        cout << "Use W, A, S, D to move up, down, left, right: " << endl
-             << "Click 'v' to save and quit the game. " << endl;
-        cin >> move;
+        move = get_validated_input("Use W, A, S, D to move up, down, left, right.\nClick 'v' to save and quit the game.\n", "wasdv");
 
         move = tolower(move);
 
