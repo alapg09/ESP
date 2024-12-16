@@ -103,8 +103,11 @@ int main()
         while (true) // gameloop
         {
             system("cls"); // used multiple times to clear the terminal
-
+            cout << GREEN << "*********MINE MAZE***********" << endl
+                 << RESET;
             displayGrid(rows, columns, displayed_Grid); // displaying the grid
+            cout << GREEN << "****************************" << endl
+                 << RESET;
             int save;
             save = movement(player_row, player_column, rows, columns, grid, displayed_Grid); // movement
             if (save == 0)
