@@ -24,7 +24,7 @@ char **initializeGrid(int rows, int columns) // creates a 2d array dynamically
     return grid;
 }
 
-void displayGrid(int rows, int columns, char **grid) // showing the grid
+void displayGrid(int rows, int columns, char **grid, int player_row, int player_column) // showing the grid
 {
     for (int i = 0; i < rows; i++)
     {
@@ -40,7 +40,14 @@ void displayGrid(int rows, int columns, char **grid) // showing the grid
             }
             else
             {
-                cout << WHITE << grid[i][j] << ' ' << RESET;
+                if (i == player_row && j == player_column)
+                {
+                    cout << YELLOW << grid[i][j] << ' ' << RESET;
+                }
+                else
+                {
+                    cout << WHITE << grid[i][j] << ' ' << RESET;
+                }
             }
         }
         cout << endl;

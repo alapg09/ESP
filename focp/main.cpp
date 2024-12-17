@@ -35,7 +35,7 @@ int main()
              << "*                                             *" << endl
              << "*       'l' to load previous game             *" << endl
              << "*    'e' for Easy  |      'h' for Hard        *" << endl
-             << "*    'q' to quit    |      'r' for Rules      *" << endl
+             << "*    'q' to quit    |     'r' for Rules      *" << endl
              << "*                                             *" << endl
              << "***********************************************" << endl;
 
@@ -105,7 +105,7 @@ int main()
             system("cls"); // used multiple times to clear the terminal
             cout << GREEN << "*********MINE MAZE***********" << endl
                  << RESET;
-            displayGrid(rows, columns, displayed_Grid); // displaying the grid
+            displayGrid(rows, columns, displayed_Grid, player_row, player_column); // displaying the grid
             cout << GREEN << "****************************" << endl
                  << RESET;
             int save;
@@ -129,7 +129,7 @@ int main()
 
                 cout << GREEN << "Here is the grid: " << endl
                      << RESET;
-                displayGrid(rows, columns, grid);
+                displayGrid(rows, columns, grid, player_row, player_column);
                 break;
             }
 
@@ -146,7 +146,7 @@ int main()
 
                 cout << GREEN << "Here is the grid: " << endl
                      << RESET;
-                displayGrid(rows, columns, grid);
+                displayGrid(rows, columns, grid, player_row, player_column);
                 break;
             }
 
