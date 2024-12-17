@@ -30,7 +30,7 @@ void displayGrid(int rows, int columns, char **grid, int player_row, int player_
     {
         for (int j = 0; j < columns; j++)
         {
-            if (grid[i][j] == '*')
+            if (grid[i][j] == '*') // different colours for different entries
             {
                 cout << RED << grid[i][j] << ' ' << RESET;
             }

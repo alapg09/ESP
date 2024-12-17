@@ -7,15 +7,15 @@ using namespace std;
 
 void saveGame(int rows, int columns, int player_row, int player_column, char **grid, char **displayed_Grid)
 {
-    ofstream outFile("save_game.txt");
-    if (!outFile)
+    ofstream outFile("save_game.txt"); // writing to the file
+    if (!outFile)                      // in case there is an error opening the file
     {
         cout << "Error opening file for loading!" << endl;
         return;
     }
 
-    outFile << rows << " " << columns << " " << player_row << " " << player_column << "\n";
-    for (int i = 0; i < rows; i++)
+    outFile << rows << " " << columns << " " << player_row << " " << player_column << "\n"; // basic variablws
+    for (int i = 0; i < rows; i++)                                                          // grid
     {
         for (int j = 0; j < columns; j++)
         {
@@ -23,7 +23,7 @@ void saveGame(int rows, int columns, int player_row, int player_column, char **g
         }
         outFile << "\n";
     }
-    outFile << "DISPLAYED\n";
+    outFile << "DISPLAYED\n"; // displayed grid
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < columns; j++)
@@ -37,13 +37,13 @@ void saveGame(int rows, int columns, int player_row, int player_column, char **g
 
 void loadGame(int &rows, int &columns, int &player_row, int &player_column, char **&grid, char **&displayed_Grid)
 {
-    ifstream inFile("save_game.txt");
+    ifstream inFile("save_game.txt"); // reading
     if (!inFile)
     {
         cout << "Error opening file for loading!" << endl;
         return;
     }
-    inFile >> rows >> columns >> player_row >> player_column;
+    inFile >> rows >> columns >> player_row >> player_column; // reading files
 
     grid = initializeGrid(rows, columns);
     for (int i = 0; i < rows; i++)

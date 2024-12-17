@@ -34,7 +34,7 @@ int movement(int &player_row, int &player_column, int rows, int columns, char **
             continue;
         }
 
-        switch (move)
+        switch (move) // movement using increment operators
         {
         case 'w':
             new_row--;
