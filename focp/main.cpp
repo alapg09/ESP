@@ -136,7 +136,7 @@ int main()
             if (player_row == rows - 1 && player_column == columns - 1) // checking for last cell
             {
                 system("cls");
-                cout << CYAN << BOLD << "***********************************************" << endl
+                cout << GREEN << BOLD << "***********************************************" << endl
                      << "*                                             *" << endl
                      << "*          Congratulations! You reached       *" << endl
                      << "*                the goal.                    *" << endl
