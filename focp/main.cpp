@@ -25,7 +25,7 @@ int main()
 
     do // game will run untill the user decides to quit
     {
-        system("cls");
+        system("cls"); // used multiple times to clear the terminal
 
         cout << GREEN << BOLD << "***********************************************" << endl
              << "*                                             *" << endl
@@ -102,7 +102,7 @@ int main()
 
         while (true) // gameloop
         {
-            system("cls"); // used multiple times to clear the terminal
+            system("cls");
             cout << GREEN << "*********MINE MAZE***********" << endl
                  << RESET;
             displayGrid(rows, columns, displayed_Grid, player_row, player_column); // displaying the grid
