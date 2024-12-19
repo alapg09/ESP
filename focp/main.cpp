@@ -35,7 +35,7 @@ int main()
              << "*                                             *" << endl
              << "*       'l' to load previous game             *" << endl
              << "*    'e' for Easy  |      'h' for Hard        *" << endl
-             << "*    'q' to quit    |     'r' for Rules      *" << endl
+             << "*    'q' to quit    |     'r' for Rules       *" << endl
              << "*                                             *" << endl
              << "***********************************************" << endl;
 
