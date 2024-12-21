@@ -5,11 +5,14 @@ from tkinter import ttk, messagebox
 appliances = []
 
 # Recommended companies for inverters
-RECOMMENDED_COMPANIES = {
+RECOMMENDED_INVERTERS = {
     "Micro-inverter": ["Huawei", "Growatt", "Fronius"],
     "String inverter": ["Sungrow", "GoodWe", "SolarMax"],
     "Hybrid inverter": ["Tesla", "Hybrid Solar Solutions", "Alpha ESS"],
 }
+
+# Recommended solar panel companies
+RECOMMENDED_SOLAR_PANELS = ["Jinko Solar", "Canadian Solar", "JA Solar", "Trina Solar", "LONGi Solar"]
 
 # Function to clear dynamic frame
 def clear_dynamic_frame(frame):
@@ -79,9 +82,9 @@ def calculate_system(system_type, sunlight_hours, tubewell_kw, appliances):
     system_size = total_energy / sunlight
     inverter_type = recommend_inverter(system_size)
     cost = estimate_cost(system_size)
-    companies = RECOMMENDED_COMPANIES[inverter_type]
+    inverter_companies = RECOMMENDED_INVERTERS[inverter_type]
 
-    display_results(stype, total_energy, system_size, inverter_type, cost, companies)
+    display_results(stype, total_energy, system_size, inverter_type, cost, inverter_companies)
 
 # Function to recommend inverter type
 def recommend_inverter(system_size):
@@ -111,7 +114,7 @@ def estimate_cost(system_size):
     }
 
 # Function to display results
-def display_results(stype, total_energy, system_size, inverter_type, cost, companies):
+def display_results(stype, total_energy, system_size, inverter_type, cost, inverter_companies):
     result_text = f"System Type: {stype.capitalize()}\n"
     result_text += f"Total Energy Requirement: {total_energy:.2f} kWh\n"
     result_text += f"Recommended System Size: {system_size:.2f} kW\n"
@@ -120,7 +123,9 @@ def display_results(stype, total_energy, system_size, inverter_type, cost, compa
     for key, value in cost.items():
         result_text += f"{key}: {value}\n"
     result_text += "\nRecommended Solar Inverter Companies in Pakistan:\n"
-    result_text += ", ".join(companies)
+    result_text += ", ".join(inverter_companies)
+    result_text += "\n\nRecommended Solar Panel Brands:\n"
+    result_text += ", ".join(RECOMMENDED_SOLAR_PANELS)
 
     messagebox.showinfo("System Estimate", result_text)
 
