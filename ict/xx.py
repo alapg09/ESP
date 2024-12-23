@@ -9,6 +9,17 @@ class SolarEstimator:
         self.root.title("Solar System Estimator")
         self.root.geometry("700x800")
         
+        # Recommendations data
+        self.RECOMMENDED_INVERTERS = {
+            "Micro-inverter": ["Huawei", "Growatt", "Fronius"],
+            "String inverter": ["Sungrow", "GoodWe", "SolarMax"],
+            "Hybrid inverter": ["Tesla", "Hybrid Solar Solutions", "Alpha ESS"],
+        }
+        self.RECOMMENDED_SOLAR_PANELS = [
+            "Jinko Solar", "Canadian Solar", "JA Solar", 
+            "Trina Solar", "LONGi Solar"
+        ]
+        
         # Style configuration
         self.style = tb.Style()
         self.style.configure("Title.TLabel", font=("Helvetica", 24, "bold"))
@@ -18,7 +29,6 @@ class SolarEstimator:
         self.create_main_content()
         
     def create_header(self):
-        # Create gradient-like header
         header = tb.Frame(self.root, bootstyle="primary")
         header.pack(fill="x", pady=(0, 20))
         
@@ -41,7 +51,6 @@ class SolarEstimator:
         subtitle.pack(pady=(0, 20))
 
     def create_main_content(self):
-        # Main content container with padding
         main_frame = tb.Frame(self.root)
         main_frame.pack(fill="both", expand=True, padx=30, pady=20)
         
@@ -175,8 +184,15 @@ class SolarEstimator:
         for widget in self.dynamic_frame.winfo_children():
             widget.destroy()
 
+    def recommend_inverter(self, system_size):
+        if system_size <= 5:
+            return "Micro-inverter"
+        elif 5 < system_size <= 15:
+            return "String inverter"
+        else:
+            return "Hybrid inverter"
+
     def calculate(self):
-        # Calculation logic remains the same as your original code
         sunlight = self.sunlight_hours.get()
         if sunlight <= 0:
             messagebox.showerror("Error", "Please enter valid sunlight hours")
@@ -194,34 +210,113 @@ class SolarEstimator:
                 return
             total_energy = tubewell * sunlight
 
-        # Display results in a modern message box
         system_size = total_energy / sunlight
+        inverter_type = self.recommend_inverter(system_size)
         cost = self.estimate_cost(system_size)
         
+        # Create enhanced results window
         result = tb.Toplevel(self.root)
         result.title("System Estimate")
-        result.geometry("500x400")
+        result.geometry("600x700")
         
+        # Header
+        header = tb.Frame(result, bootstyle="primary")
+        header.pack(fill="x")
         tb.Label(
-            result,
-            text="System Estimate",
-            font=("Helvetica", 18, "bold"),
-            bootstyle="primary"
+            header,
+            text="Solar System Recommendation",
+            font=("Helvetica", 20, "bold"),
+            foreground="white",
+            bootstyle="inverse-primary"
         ).pack(pady=20)
-        
-        text = tb.Text(result, height=15, width=50)
-        text.pack(padx=20, pady=10)
-        text.insert("1.0", f"""
-System Size: {system_size:.2f} kW
-Daily Energy: {total_energy:.2f} kWh
 
-Cost Breakdown:
-• Panel Cost: Rs. {cost['Panel Cost']:,.2f}
-• Inverter Cost: Rs. {cost['Inverter Cost']:,.2f}
-• Installation: Rs. {cost['Installation Cost']:,.2f}
-• Total Cost: Rs. {cost['Total Cost']:,.2f}
-""")
-        text.configure(state="disabled")
+        # Main content
+        content = tb.Frame(result)
+        content.pack(fill="both", expand=True, padx=30, pady=20)
+
+        # System Details Section
+        details_frame = tb.Labelframe(
+            content,
+            text="System Details",
+            padding=15,
+            bootstyle="primary"
+        )
+        details_frame.pack(fill="x", pady=(0, 15))
+
+        system_details = f"""
+System Type: {self.system_type.get().capitalize()}
+Required System Size: {system_size:.2f} kW
+Daily Energy Requirement: {total_energy:.2f} kWh
+Recommended Inverter Type: {inverter_type}
+"""
+        tb.Label(
+            details_frame,
+            text=system_details,
+            justify="left",
+            wraplength=500
+        ).pack(anchor="w")
+
+        # Cost Breakdown Section
+        cost_frame = tb.Labelframe(
+            content,
+            text="Cost Breakdown",
+            padding=15,
+            bootstyle="primary"
+        )
+        cost_frame.pack(fill="x", pady=(0, 15))
+
+        for item, value in cost.items():
+            tb.Label(
+                cost_frame,
+                text=f"{item}: Rs. {value:,.2f}",
+                font=("Helvetica", 10),
+                bootstyle="primary"
+            ).pack(anchor="w", pady=2)
+
+        # Recommendations Section
+        rec_frame = tb.Labelframe(
+            content,
+            text="Recommended Equipment",
+            padding=15,
+            bootstyle="primary"
+        )
+        rec_frame.pack(fill="x", pady=(0, 15))
+
+        # Inverter recommendations
+        tb.Label(
+            rec_frame,
+            text=f"Recommended {inverter_type} Companies:",
+            font=("Helvetica", 10, "bold")
+        ).pack(anchor="w", pady=(0, 5))
+        
+        for company in self.RECOMMENDED_INVERTERS[inverter_type]:
+            tb.Label(
+                rec_frame,
+                text=f"• {company}",
+                bootstyle="primary"
+            ).pack(anchor="w")
+
+        # Solar panel recommendations
+        tb.Label(
+            rec_frame,
+            text="Recommended Solar Panel Brands:",
+            font=("Helvetica", 10, "bold")
+        ).pack(anchor="w", pady=(10, 5))
+        
+        for panel in self.RECOMMENDED_SOLAR_PANELS:
+            tb.Label(
+                rec_frame,
+                text=f"• {panel}",
+                bootstyle="primary"
+            ).pack(anchor="w")
+
+        # Close button
+        tb.Button(
+            content,
+            text="Close",
+            command=result.destroy,
+            bootstyle="secondary"
+        ).pack(pady=10)
 
     def estimate_cost(self, system_size):
         panel_cost = system_size * 46000
