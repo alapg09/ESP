@@ -13,7 +13,7 @@ class SolarEstimator:
         self.RECOMMENDED_INVERTERS = {
             "Micro-inverter": ["Huawei", "Growatt", "Fronius"],
             "String inverter": ["Sungrow", "GoodWe", "SolarMax"],
-            "Hybrid inverter": ["Tesla", "Hybrid Solar Solutions", "Alpha ESS"],
+            "Hybrid inverter": ["Tesla", "Hybrid Solar Solutions", "Growatt"],
         }
         self.RECOMMENDED_SOLAR_PANELS = [
             "Jinko Solar", "Canadian Solar", "JA Solar", 
