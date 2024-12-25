@@ -29,7 +29,7 @@ int main()
 
         cout << GREEN << BOLD << "***********************************************" << endl
              << "*                                             *" << endl
-             << "*           Welcome to MINE MAZE              *" << endl
+             << "*           Welcome to MINE ESCAPE            *" << endl
              << "*                                             *" << endl
              << "*          Please Select an Option            *" << endl
              << "*                                             *" << endl

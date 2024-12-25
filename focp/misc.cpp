@@ -14,7 +14,7 @@ char get_validated_input(const string &prompt, const string &validOptions)
         cout << GREEN << prompt << RESET;
         cin >> input;
 
-        // validates only single characteredi innputs
+        // validates only single characteredi inputs
         if (cin.fail() || (cin.peek() != '\n' && cin.peek() != EOF))
         {
             cin.clear();
@@ -26,7 +26,7 @@ char get_validated_input(const string &prompt, const string &validOptions)
 
         input = tolower(input);
 
-        // Check against valid options
+        // Check against valid options(this part is done with the help of AI)
         if (validOptions.find(input) != string::npos) // checks if entered options are among the ones allowed
         {
             return input;
