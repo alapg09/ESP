@@ -12,7 +12,9 @@ A compile.bat file is provided for easy compilation and running of the program.
 
 How to Run
 > Make sure all files are in the same directory and you are in that directory.
-> Run compile.bat to compile and start the game.
+> Run compile.bat using the command :
+.\compile.bat 
+to compile and start the game.
 
 
 Contents of compile.bat:
