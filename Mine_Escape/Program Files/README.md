@@ -13,13 +13,16 @@ A compile.bat file is provided for easy compilation and running of the program.
 How to Run
 > Make sure all files are in the same directory and you are in the "Progam Files" directory. If not, use the command cd '.\Program Files\' to go to the directory
 > Run compile.bat using the command :
-.\compile.bat 
-to compile and start the game.
+    .\compile.bat 
+to compile the game.
+> Finally, run the game 
+    .\Mine_Escape.exe
+and enjoy!
 
 
 Contents of compile.bat:
 
-g++ -o Mine_Escape main.cpp misc.cpp grid.cpp player_movements.cpp mine_layouts.cpp file_operations.cpp && Mine_Escspe
+g++ -o Mine_Escape main.cpp misc.cpp grid.cpp player_movements.cpp mine_layouts.cpp file_operations.cpp
 
 
 Game instructions and rules are mentioned inside the game!
